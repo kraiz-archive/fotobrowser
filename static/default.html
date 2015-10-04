@@ -1,0 +1,22 @@
+<ul>
+  {{#each files}}
+  {{#if IsDir}}
+  <li>
+    <a href="#{{Url}}">
+      {{Name}}
+    </a>
+  </li>
+  {{/if}}
+  {{/each}}
+</ul>
+
+
+<div class="fotorama" data-nav="thumbs" data-width="100%" data-height="100%">
+  {{#each files}}
+  {{#unless IsDir}}
+  <a href="{{Url}}">
+    <img src="{{ThumbUrl}}" />
+  </a>
+  {{/unless}}
+  {{/each}}
+</div>

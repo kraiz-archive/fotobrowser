@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <title>Foto</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/vendor/fotorama-4.6.4/fotorama.css" />
+    <script type="text/javascript" src="/vendor/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="/vendor/handlebars-v4.0.2.js"></script>
+    <script type="text/javascript" src="/vendor/fotorama-4.6.4/fotorama.js"></script>
+    <script type="text/javascript">
+$(function() {
+
+  function refresh() {
+    $.getJSON(window.location.hash.slice(1) || "/photos/", function(files) {
+      if (!window.location.hash) {
+        $(".fotorama").html(Handlebars.compile($("#folders").html())({files: files}));
+      } else {
+        $(".fotorama").fotorama({
+          width: '100%',
+          height: '100%',
+          nav: 'thumbs',
+          thumbheight: '50px',
+          thumbfit: 'contain',
+          keyboard: true,
+          click: true,
+          swipe: true,
+          trackpad: true,
+          data: $.map($.grep(files, function(file) {
+            return file.isPhoto
+          }), function(photo) {
+            photo.img = photo.thumb + "?height=" + (window.screen.availHeight - 54)
+            return photo
+          })
+        });
+      }
+    });
+  }
+
+  $(window).on("hashchange", refresh);
+  refresh();
+});
+    </script>
+  </head>
+  <script id="folders" type="text/x-handlebars-template"><ul>{{#each files}}{{#if isDir}}<li><a href="#{{img}}">{{name}}</a></li>{{/if}}{{/each}}</ul></script>
+  <body style="margin: 0">
+    <div class="fotorama" data-auto="false">Loading...</div>
+  </body>
+</html>

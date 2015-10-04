@@ -1,0 +1,24 @@
+<html ng-app="fotoBrowser">
+  <head>
+    <title>Foto</title>
+    <link rel="stylesheet" href="/style.css">
+    <script type="text/javascript" src="/vendor/angular.min.js"></script>
+    <script type="text/javascript" src="/app.js"></script>
+  </head>
+  <body ng-controller="AppCtrl">
+    <h1></h1>
+    <p>{{ path }}</p>
+    <ul>
+      <li ng-repeat="file in files | filter: {IsDir: true } track by $index">
+        <a href="#{{ file.Url }}" ng-click="newPath(file.Url)">
+          {{ file.Name }}
+        </a>
+      </li>
+    </ul>
+    <ul>
+      <li ng-repeat="file in files | filter: {IsDir: false } track by $index">
+        <img src="{{ file.ThumbUrl }}" />
+      </li>
+    </ul>
+  </body>
+</html>
